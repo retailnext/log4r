@@ -17,7 +17,7 @@ module Log4r
   #
   # [<tt>:maxsize</tt>]  Maximum size of the file in bytes.
   # [<tt>:maxtime</tt>]	 Maximum age of the file in seconds.
-  # [<tt>:max_backups</tt>]  Maxium number of prior log files to maintain. If max_backups is a positive number, 
+  # [<tt>:max_backups</tt>]  Maxium number of prior log files to maintain. If max_backups is a positive number,
   #     then each time a roll happens, RollingFileOutputter will delete the oldest backup log files in excess
   #     of this number (if any).  So, if max_backups is 10, then a maximum of 11 files will be maintained (the current
   #     log, plus 10 backups). If max_backups is 0, no backups will be kept. If it is negative (the default),
@@ -32,37 +32,37 @@ module Log4r
 
     def initialize(_name, hash={})
       super( _name, hash.merge({:create => false}) )
-      if hash.has_key?(:maxsize) || hash.has_key?('maxsize') 
+      if hash.has_key?(:maxsize) || hash.has_key?('maxsize')
         _maxsize = (hash[:maxsize] or hash['maxsize']).to_i
-        if _maxsize.class != Fixnum
-          raise TypeError, "Argument 'maxsize' must be an Fixnum", caller
+        if _maxsize.class != Integer
+          raise TypeError, "Argument 'maxsize' must be an Integer", caller
         end
         if _maxsize == 0
           raise TypeError, "Argument 'maxsize' must be > 0", caller
         end
         @maxsize = _maxsize
       end
-      if hash.has_key?(:maxtime) || hash.has_key?('maxtime') 
+      if hash.has_key?(:maxtime) || hash.has_key?('maxtime')
         _maxtime = (hash[:maxtime] or hash['maxtime']).to_i
-        if _maxtime.class != Fixnum
-          raise TypeError, "Argument 'maxtime' must be an Fixnum", caller
+        if _maxtime.class != Integer
+          raise TypeError, "Argument 'maxtime' must be an Integer", caller
         end
         if _maxtime == 0
           raise TypeError, "Argument 'maxtime' must be > 0", caller
         end
         @maxtime = _maxtime
       end
-      if hash.has_key?(:max_backups) || hash.has_key?('max_backups') 
+      if hash.has_key?(:max_backups) || hash.has_key?('max_backups')
         _max_backups = (hash[:max_backups] or hash['max_backups']).to_i
-        if _max_backups.class != Fixnum
-          raise TypeError, "Argument 'max_backups' must be an Fixnum", caller
+        if _max_backups.class != Integer
+          raise TypeError, "Argument 'max_backups' must be an Integer", caller
         end
         @max_backups = _max_backups
       else
         @max_backups = -1
       end
       # @filename starts out as the file (including path) provided by the user, e.g. "\usr\logs\error.log".
-      #   It will get assigned the current log file (including sequence number)   
+      #   It will get assigned the current log file (including sequence number)
       # @log_dir is the directory in which we'll log, e.g. "\usr\logs"
       # @file_extension is the file's extension (if any) including any period, e.g. ".log"
       # @core_file_name is the part of the log file's name, sans sequence digits or extension, e.g. "error"
@@ -76,9 +76,9 @@ module Log4r
       makeNewFilename
       # Now @filename points to a properly sequenced filename, which may or may not yet exist.
       open_log_file('a')
-      
+
       # Note: it's possible we're already in excess of our time or size constraint for the current file;
-      # no worries -- if a new file needs to be started, it'll happen during the write() call. 
+      # no worries -- if a new file needs to be started, it'll happen during the write() call.
     end
 
     #######
@@ -91,15 +91,15 @@ module Log4r
         # Make a list of the log files to delete. Start with all of the matching log files...
         glob = "#{@core_file_name}[0-9][0-9][0-9][0-9][0-9][0-9]#{@file_extension}"
         files = Dir.glob(glob)
-        
-        # ... if there are fewer than our threshold, just return... 
+
+        # ... if there are fewer than our threshold, just return...
         if (files.size() <= number_to_keep )
           # Logger.log_internal {"No log files need purging."}
           return
         end
-        # ...then remove those that we want to keep (i.e. the most recent #{number_to_keep} files). 
+        # ...then remove those that we want to keep (i.e. the most recent #{number_to_keep} files).
         files.sort!().slice!(-number_to_keep, number_to_keep)
-        
+
         # Delete the files. We use force (rm_f), so in case any files can't be deleted (e.g. someone's got one
         # open in an editor), we'll swallow the error and keep going.
         FileUtils.rm_f(files)
@@ -122,7 +122,7 @@ module Log4r
     end
 
     # perform the write
-    def write(data) 
+    def write(data)
       # we have to keep track of the file size ourselves - File.size doesn't
       # seem to report the correct size when the size changes rapidly
       @datasize += data.size + 1 # the 1 is for newline
@@ -137,7 +137,7 @@ module Log4r
       padded_seq_no = "0" * (6 - @current_sequence_number.to_s.length) + @current_sequence_number.to_s
       newbase = "#{@core_file_name}#{padded_seq_no}#{@file_extension}"
       @filename = File.join(@log_dir, newbase)
-    end 
+    end
 
     # Open @filename with the given mode:
     #    'a' - appends to the end of the file if it exists; otherwise creates it.
@@ -146,7 +146,7 @@ module Log4r
     def open_log_file(mode)
       # It appears that if a file has been recently deleted then recreated, calls like
       # File.ctime can return the erstwhile creation time. File.size? can similarly return
-      # old information. So instead of simply doing ctime and size checks after File.new, we 
+      # old information. So instead of simply doing ctime and size checks after File.new, we
       # do slightly more complicated checks beforehand:
       if (mode == 'w' || !File.exists?(@filename))
         @start_time = Time.now()
@@ -170,39 +170,39 @@ module Log4r
         return true
       end
       false
-    end 
+    end
 
     # roll the file
     def roll
       begin
         # If @baseFilename == @filename, then this method is about to
         # try to close out a file that is not actually opened because
-        # fileoutputter has been called with the parameter roll=true        
+        # fileoutputter has been called with the parameter roll=true
         # TODO: Is this check valid any more? I suspect not. Am commenting out...:
         #if ( @baseFilename != @filename ) then
           @out.close
         #end
-      rescue 
+      rescue
         Logger.log_internal {
           "RollingFileOutputter '#{@name}' could not close #{@filename}"
         }
       end
 
       # Prepare the next file. (Note: if max_backups is zero, we can skip this; we'll
-      # just overwrite the existing log file) 
+      # just overwrite the existing log file)
       if (@max_backups != 0)
         @current_sequence_number += 1
         makeNewFilename
       end
-      
+
       open_log_file('w')
-      
+
       # purge any excess log files (unless max_backups is negative, which means don't purge).
-      if (@max_backups >= 0) 
+      if (@max_backups >= 0)
         purge_log_files(@max_backups + 1)
       end
 
-    end 
+    end
 
   end
 
