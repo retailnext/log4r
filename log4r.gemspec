@@ -14,13 +14,13 @@ Gem::Specification.new do |gem|
   gem.summary = %Q{Log4r, logging framework for ruby}
   gem.description = %Q{See also: http://logging.apache.org/log4j}
   gem.email = "colby@shrewdraven.com"
-  gem.homepage = "http://log4r.rubyforge.org"
+  gem.homepage = "https://github.com/colbygk/log4r"
   gem.authors = ['Colby Gutierrez-Kraybill', 'tony kerz']
+  gem.license = 'BSD-3-Clause'
   gem.bindir = 'bin'
   gem.test_files = Dir.glob("tests/**/*")
   gem.files = Dir['doc/**/*'] + Dir['examples/**/*'] + Dir['lib/**/*']
 
   gem.add_development_dependency "bundler", [">= 1.0.0"]
-  gem.add_development_dependency 'rake', ["~> 0.8.7"]
+  gem.add_development_dependency 'rake', ["~> 12.3.3"]
 end
-
