@@ -3,5 +3,4 @@
 .buildpath
 pkg/
 tmp/
-Gemfile.lock
 fabfile.py*
