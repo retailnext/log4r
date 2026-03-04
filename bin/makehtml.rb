@@ -29,7 +29,7 @@ Templates = Hash.new
 
 def load(fname)
   str = ""
-  IO.foreach(fname) {|line|
+  File.foreach(fname) {|line|
     str += line
   }
   Templates[fname] = str
@@ -37,7 +37,7 @@ end
 
 def parse(fname)
   title, template, id, cont = nil, nil, nil, ""
-  IO.foreach(fname) {|line|
+  File.foreach(fname) {|line|
     if title.nil? and line =~ /^Title:(.*)/
       title = "<title>" + ($1).chomp.strip + "</title>"
     elsif template.nil? and line =~ /^Template:\s*(\S+\.html)/
