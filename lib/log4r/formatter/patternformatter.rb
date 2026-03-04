@@ -54,7 +54,7 @@ module Log4r
     # * $6 is the stuff after the directive or "" if not applicable
     # * $7 is the remainder
   
-    DirectiveRegexp = /((?>[^%]*))((%(?:-?\d+)?(\.\d+)?)([cCdgtTmhpMlxX%]))?(\{[^}]+\})?(.*)/m
+    DirectiveRegexp = /((?>[^%]*))((%(?:-?\d+)?(\.\d+)?)([cCdgtTmhpMlx%]|X(?=\{[^}]+\})))?(\{[^}]+\})?(.*)/m
   
     # default date format
     ISO8601 = "%Y-%m-%d %H:%M:%S"

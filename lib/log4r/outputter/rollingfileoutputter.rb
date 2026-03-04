@@ -17,7 +17,7 @@ module Log4r
   #
   # [<tt>:maxsize</tt>]  Maximum size of the file in bytes.
   # [<tt>:maxtime</tt>]	 Maximum age of the file in seconds.
-  # [<tt>:max_backups</tt>]  Maxium number of prior log files to maintain. If max_backups is a positive number,
+  # [<tt>:max_backups</tt>]  Maximum number of prior log files to maintain. If max_backups is a positive number,
   #     then each time a roll happens, RollingFileOutputter will delete the oldest backup log files in excess
   #     of this number (if any).  So, if max_backups is 10, then a maximum of 11 files will be maintained (the current
   #     log, plus 10 backups). If max_backups is 0, no backups will be kept. If it is negative (the default),
