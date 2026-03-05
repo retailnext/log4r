@@ -24,7 +24,7 @@ title = "#{Version} Log4r API"
 run "cd #{Src}; rdoc --op #{Docs} --main log4r.rb --title '#{title}' --exclude CVS"
 
 # sub the version into the log4r_rb.html file
-html = IO.readlines(Docs+"/log4r_rb.html")
+html = File.readlines(Docs+"/log4r_rb.html")
 f = File.open(Docs+"/log4r_rb.html", "w")
 f.write((html.join).gsub!('#{version}', Version))
 f.close

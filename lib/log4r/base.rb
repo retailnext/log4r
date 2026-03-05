@@ -66,9 +66,9 @@ module Log4r
         end
     end
 
-    # Splits comma-delimited lists with arbitrary \s padding
+    # Splits comma-delimited lists on ',' and strips surrounding whitespace from each element
     def self.comma_split(string)
-      string.split(/\s*,\s*/).collect {|s| s.strip}
+      string.split(',').collect {|s| s.strip}
     end
   end
 end
